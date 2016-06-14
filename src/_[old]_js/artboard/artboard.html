@@ -1,0 +1,11 @@
+<div ng-switch="dialect">
+    <div ng-switch-when="text/paperscript">
+
+    </div>
+    <div ng-switch-when="text/paperscript">
+
+    </div>
+</div>
+
+<canvas id="paperscript-canvas" class="canvas-fullscreen"></canvas>
+<script type="{{dialect}}" canvas="paperscript-canvas">{{source}}</script>

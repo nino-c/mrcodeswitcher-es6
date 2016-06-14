@@ -1,0 +1,46 @@
+<md-toolbar md-whiteframe="3" ng-cloak>
+    <div id="top-toolbar" layout="row" layout-align="center center">
+
+        <span class="sub-brand" ui-sref="app.home" flex="grow">
+            <span flex hide-xs>Apps at an Exhibition</span>
+            <span flex hide-xs>::</span>
+            <span class="proposition" hide-xs>$(\forall x \in A)\space( \exists y)\space y = E(x)$</span>
+            <span class="device-xs" flex hide-gt-xs>Apps at an Exhibition</span>
+        </span>
+
+        <span flex="none">
+
+            <!-- {% if user.is_authenticated %}
+            <md-menu>
+                <md-button ng-click="$mdOpenMenu()">
+                    <img src="{% thumbnail user.profile.picture|default:'default_profile.png' 30x30 crop %}" class="avatar" />
+                    {{ user.get_full_name|truncatechars:20 }}
+                    <span class="caret"></span>
+                </md-button>
+                <md-menu-content>
+                  <md-menu-item>
+                      <md-button href="{% url 'profiles:show_self' %}">Profile</md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                      <md-button href="{% url 'accounts:logout' %}">Logout</md-button>
+                  </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            {% endif %} -->
+
+            <!-- {% if not user.is_authenticated %} -->
+            <md-button class="md-button pull-right"
+                ng-cloak ui-sref="app.login"
+                ng-if="!userLoggedIn">Log in</md-button>
+
+            <md-button class="md-button pull-right"
+                ng-cloak ng-click="ctrl.logout()"
+                ng-if="userLoggedIn">Log out</md-button>
+
+            <!-- <md-button class="md-small" ng-cloak ng-href="{% url 'accounts:signup' %}" role="button">Register</md-button> -->
+            <!-- {% endif %} -->
+
+        </span>
+
+    </div>
+</md-toolbar>
