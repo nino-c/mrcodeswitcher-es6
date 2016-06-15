@@ -1,17 +1,18 @@
 import angular from 'angular';
-import config from './config';
+//import config from './config';
 
 export default class Authentication {
-  constructor($q, request, $location, $rootScope) {
+  constructor($q, request, $location, $rootScope, config) {
       'ngInject';
 
     this.$q = $q;
     this.request = request;
     this.$location = $location;
     this.$rootScope = $rootScope;
+    this.config = config;
 
     this.current = null;
-    this.token = localStorage.getItem(config.AUTH_KEY);
+    this.token = localStorage.getItem(this.config.AUTH_KEY);
   }
 
   hasAuthorized() {
@@ -38,8 +39,10 @@ export default class Authentication {
       this.current = res.data.user;
       this.token = res.data.token;
       this.$rootScope.userLoggedIn = true;
-      localStorage.setItem(config.AUTH_KEY, this.token);
+
+      localStorage.setItem(this.config.AUTH_KEY, this.token);
       deferred.resolve(this.current);
+      this.$rootScope.user = this.current;
     }, deferred.reject);
     return deferred.promise;
   }
@@ -62,10 +65,11 @@ export default class Authentication {
   logout() {
     if (!this.isAuthorized()) { return; }
     console.log('logout');
-    localStorage.removeItem(config.AUTH_KEY);
+    localStorage.removeItem(this.config.AUTH_KEY);
     this.current = null;
     this.token = null;
     this.$rootScope.userLoggedIn = false;
+    this.$rootScope.user = null;
     this.$location.path("/app/home");
 
   }

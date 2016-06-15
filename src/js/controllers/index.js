@@ -5,6 +5,7 @@ import ContentController from './content-controller'
 import AppListController from './app-list-controller'
 import AppDisplayController from './app-display'
 import AppInstanceController from './instance'
+import AppEditorController from './app-editor'
 
 export default angular.module('controllers', [])
 .controller('HomeController', HomeController)
@@ -13,4 +14,5 @@ export default angular.module('controllers', [])
 .controller('BottomBarController', BottomBarController)
 .controller('ToolbarController', ToolbarController)
 .controller('AppDisplayController', AppDisplayController)
-.controller('AppInstanceController', AppInstanceController);
+.controller('AppInstanceController', AppInstanceController)
+.controller('AppEditorController', AppEditorController);

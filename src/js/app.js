@@ -5,11 +5,11 @@ import 'angular-route';
 import 'angular-resource';
 import 'angular-cookies';
 import 'angular-bootstrap';
-//import 'ng-infinite-scroll';
+import 'angular-ui-codemirror';
 
 // gulp-generated template cache
 import './config/templates';
-
+import './config';
 import './controllers';
 import './services';
 import './directives';
@@ -22,20 +22,22 @@ import 'numeric';
 import 'underscore';
 import Complex from 'complex';
 import Babel from  'babel-standalone';
-//import 'codemirror';
-//import 'angular-ui-codemirror';
+import CodeMirror from 'codemirror';
+import CoffeeScript from 'coffee-script';
+
+
 //import MathJax from 'mathjax';
 
 // Mount on window for testing
 window.app = angular.module('app', [
+    'config',
     'ui.router',
     'ngMaterial',
     'ui.bootstrap',
-    //'ui.codemirror',
+    'ui.codemirror',
     'ngRoute',
     'ngResource',
     'ngCookies',
-    //'infinite-scroll',
     'templates',
     'controllers',
     'services',
@@ -110,6 +112,12 @@ window.app.value('ui.config', {
             controller: 'AppDisplayController',
             controllerAs: 'ctrl'
         })
+        .state('app.edit', {
+            url: '/:id/edit/',
+            templateUrl: 'views/app-editor.html',
+            controller: 'AppEditorController',
+            controllerAs: 'ctrl'
+        })
         .state('app.instance', {
             url: '/:app/:id',
             templateUrl: 'views/app-instance.html',
@@ -182,15 +190,21 @@ window.app.value('ui.config', {
 
         $window.Complex = Complex;
         //$window.MathJax = MathJax;
+        $window.CodeMirror = CodeMirror;
+        $window.CoffeeScript = CoffeeScript;
+
+        $rootScope.hostnametest = $window.location.hostname;
 
         $.ajaxPrefilter(function( options ) {
-            if ($window.location.hostname == 'localhost') {
+            //if (_.contains(['localhost', '0.0.0.0', '192.138.42.88'], $window.location.hostname)) {
+                console.log('HOSTNAME2', window.location);
                 if (options.url.substr(0,1) == '/') {
                     options.url = options.url.substr(1,(options.url.length-1));
                 }
-                options.url = "http://localhost:8000/" + encodeURIComponent( options.url );
+                //var hostname = $window.location.hostname;
+                options.url = `http://${$window.location.hostname}:8000/` + encodeURIComponent( options.url );
                 options.crossDomain = false;
-            }
+            //}
         });
 
         // paperscript events
@@ -230,6 +244,7 @@ window.app.value('ui.config', {
 
         //$rootScope.userLoggedIn = isNaN(parseInt($window.USER_ID)) ? false : true;
         $rootScope.userLoggedIn = authentication.isAuthorized() ? true : false;
+        $rootScope.user = authentication.isAuthorized() ? authentication.current : null;
         //$rootScope.userLoggedIn = true; $window.USER_ID = 1;
     //     $rootScope.goHome = function() {
     //       $location.path('/');

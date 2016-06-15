@@ -1,7 +1,7 @@
 
 export default class AppDisplayController {
-    constructor($rootScope, $scope, $stateParams, $location, $route, $http,
-        $window, $mdToast, $timeout, api) {
+    constructor($rootScope, $scope, $stateParams, $location, $route, $http, $state,
+        $window, $mdToast, $timeout, api, config) {
         'ngInject';
 
         this.loading = true;
@@ -20,17 +20,25 @@ export default class AppDisplayController {
                     .$promise.then(instances => {
 
                         _.each(instances, inst => {
-                            inst._seed = JSON.parse(inst.seed);
+
+                            try {
+                                inst._seed = JSON.parse(inst.seed);
+                            } catch (e) {
+                                console.log('SEED ERROR', e, inst.seed);
+                            }
                             inst.image = inst.images[0];
                         });
                         this.instances = instances;
                         this.loadingInstances = false;
 
+                        $timeout(() => {
+                            $rootScope.refreshMathJax();
+                        })
                 });
 
                 $http({
                     method: 'GET',
-                    url: '/api/increment-popularity/app/' + this.app.id + '/'
+                    url: config.ENDPOINT + '/game/increment-popularity/app/' + this.app.id + '/'
                 }).then(response => {
                     console.log('increment response', response);
                 }, error => {
@@ -42,8 +50,9 @@ export default class AppDisplayController {
 
 
         this.selectFirstInstance = function() {
-            if (this.app.instance_count > 0) {
-                this.selectInstance(this.app.first_instance_id);
+            console.log('selectFirstInstance');
+            if (this.instances.length > 0) {
+                this.selectInstance(this.instances[0].id);
             } else {
                 this.instantiate();
             }
@@ -54,13 +63,15 @@ export default class AppDisplayController {
           }
 
           this.selectInstance = function(instance_id) {
-              $location.path('/instance/'+this.app.id+'/'+instance_id+'/')
+              console.log('INSTANCE', '/app/'+this.app.id+'/'+instance_id+'/');
+              //$location.path('/app/'+this.app.id+'/'+instance_id+'/');
+              $state.go('app.instance', {app:this.app.id, id:instance_id})
           };
 
           this.instantiate = function() {
               var req = {
                   method: 'GET',
-                  url: '/game/app-instantiate/' + this.app.id + '/',
+                  url: config.ENDPOINT + '/game/app-instantiate/' + this.app.id + '/',
                   headers: {
                       'Content-Type': 'application/json'
                   }

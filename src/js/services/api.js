@@ -1,13 +1,15 @@
 import 'angular';
 import 'angular-resource';
-import config from './config';
+//import config from './config';
 
 
 export default class API {
-    constructor($resource) {
+    constructor($resource, $rootScope, config) {
         'ngInject';
 
-        this.token = localStorage.getItem(config.AUTH_KEY);
+        this.config = config;
+        this.token = localStorage.getItem(this.config.AUTH_KEY);
+        $rootScope.apitest = this.endpointUrl('/api/instances/906');
 
         this.AppService = $resource(this.endpointUrl('/api/apps/:id/'), {id:'@id'}, {
             update: {
@@ -46,7 +48,7 @@ export default class API {
     }
 
     endpointUrl(url) {
-        return `${config.ENDPOINT}${url}`;
+        return `${this.config.ENDPOINT}${url}`;
     }
 }
 

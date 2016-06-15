@@ -1,19 +1,19 @@
 import angular from 'angular';
-import config from './config';
+//import config from './config';
 
 export default class Request {
-  constructor($http) {
+  constructor($http, config) {
     'ngInject';
-    
-    this.$http = $http;
 
+    this.$http = $http;
+    this.config = config;
     /* Attempt to retrieve the auth token from localStorage. */
-    this.token = localStorage.getItem(config.AUTH_KEY);
+    this.token = localStorage.getItem(this.config.AUTH_KEY);
   }
 
   _request(method, url, data) {
     const request = {
-      method, data, url: `${config.ENDPOINT}${url}`
+      method, data, url: `${this.config.ENDPOINT}${url}`
     };
     if (this.token) {
       request.headers = { Authorization: `Token ${this.token}` };

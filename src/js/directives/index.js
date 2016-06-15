@@ -41,7 +41,9 @@ directives
             },
             template: '<span ng-switch="type" class="seed-list-value">'
                         + '<span ng-switch-when="color" class="list-value">'
-                            + '<colorbox hex="{{ value }}"></colorbox>'
+                            + '<div style="background-color: {{ value }}; width: 15px; height: '
+                                +'15px; border: 1px solid #dddddd;"></div>'
+                            //+ '<colorbox hex="{{ value }}"></colorbox>'
                         + '</span>'
                         + '<span ng-switch-when="math" class="math">'
                             + '${{ value }}$'
@@ -88,10 +90,12 @@ directives
             scope: {
                 hex: '='
             },
-            template:function(elem, attr) {
-                '<div style="background-color: {{ hex }}; width: 15px; height: '
-                    +'15px; border: 2px solid #dddddd;"></div>'
-            },
+            template:'<div style="background-color: {{ hex }}; width: 15px; height: '
+                    +'15px; border: 2px solid #dddddd;"></div>',
+            link: function(scope, element, attrs) {
+                //scope.hex = attrs.hex;
+                console.log('colorbox', scope, element, attrs);
+            }
         }
     })
     .directive('paperscriptCanvas', function($compile) {
@@ -248,10 +252,10 @@ directives
                             eval(seedcodelines );
 
                             var Canvas = angular.element(element);
-                            console.log('Canvas', Canvas);
+                            //console.log('Canvas', Canvas);
                             //gameFunction = new Function('Canvas', source);
                             //gameFunction(Canvas);
-                            console.log(source);
+                            //console.log(source);
                             eval(source);
                             //loading = false;
 
@@ -259,7 +263,7 @@ directives
                     }
 
                 }
-                console.log($scope);
+                //console.log($scope);
                 $scope.$parent.$watch('$ctrl.currentInstanceId', function(instanceId) {
 
                     if (!instanceId) return;

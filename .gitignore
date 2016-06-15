@@ -8,7 +8,7 @@ npm-debug.log*
 media/
 tmp/
 logs/
-
+src/_[old]_js/
 .env
 
 

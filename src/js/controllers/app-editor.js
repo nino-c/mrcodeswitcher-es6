@@ -54,6 +54,7 @@ export default class AppEditorController {
                   mode: lang,
                   matchBrackets: true,
                 }
+                console.log('cmOptions', $scope.cmOptions);
 
                 $scope.cm2Options = {
                   lineWrapping: true,

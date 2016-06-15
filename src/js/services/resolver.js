@@ -1,12 +1,13 @@
 import angular from 'angular';
 
 export default class Resolver {
-  constructor() {
-      'ngInject';
+    constructor() {
+    
 
-    this.$get = this.resolve;
-    this.resolve.$inject = ['$q', 'authentication'];
-  }
+        this.$get = this.resolve;
+
+        this.resolve.$inject = ['$q', 'authentication'];
+    }
 
   resolve($q, authentication) {
     const deferred = $q.defer();

@@ -30,7 +30,7 @@
                     <md-button class="md-raised md-accent"
                         ng-click="ctrl.selectFirstInstance()"
                         role="button" layout-align="center center">
-                        <md-icon md-font-set="material-icons" ng-cloak>play_circle_outline</md-icon>
+                        <md-icon md-svg-src="/assets/site/img/icons/ic_play_circle_outline_black_24px.svg">play_circle_outline</md-icon>
                         <span>Instantiate App</span>
                     </md-button>
                 </div>
@@ -40,7 +40,7 @@
 
             <div ng-if="userLoggedIn" layout="row">
                 <md-button class="md-raised md-primary"
-                    ng-href="#/apps/{{ ctrl.app.id }}/edit/"
+                    ui-sref="app.edit(ctrl.app.id)"
                     role="button" layout-align="center center">
                     <md-icon md-font-set="material-icons">&#xE254;</md-icon>
                     <span>Edit</span>
@@ -101,18 +101,18 @@
                     infinite-scroll-distance="1"> -->
 
                     <div ng-repeat="instance in ctrl.instances track by $index"
-                        class="col-xs-3 col-sm-3 col-md-2 col-lg-2 no-padding">
+                        class="no-padding" flex="nogrow">
+                        <!-- class="col-xs-3 col-sm-3 col-md-2 col-lg-2 no-padding" -->
 
                         <md-card ui-sref="app.instance({app: ctrl.app.id, id:instance.id})">
                             <md-card-content class="no-padding overlay-bg">
 
                                 <div class="overlay-item">
-                                    <!-- <h5>Seed:</h5> -->
                                     <seed-list ng-model="instance._seed"></seed-list>
                                 </div>
 
                                 <img ng-if="instance.images.length > 0"
-                                    bn-lazy-src="/media/{{ instance.images[0] | thumbnail:200 }}"
+                                    bn-lazy-src="/media/{{ instance.image | thumbnail:125 }}"
                                     class="thumbnail thumbnail-lg nomargin" />
 
 
@@ -140,7 +140,7 @@
 
             <div ng-if="ctrl.app.instances.length == 0">
                 <md-button class="md-raised md-primary"
-                    ng-click="instantiate()"
+                    ng-click="ctrl.instantiate()"
                     role="button" layout-align="center center">
                     <md-icon md-font-set="material-icons">add_circle</md-icon>
                     <span>Create first instance</span>

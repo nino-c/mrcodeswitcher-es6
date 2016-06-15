@@ -1,13 +1,9 @@
-import config from '../services/config';
-
-
-function endpointUrl(url) {
-    return `${config.ENDPOINT}${url}`;
-}
+//import config from '../services/config';
 
 export default class AppInstanceController {
     constructor($rootScope, $window, $document, $scope, $interval, $location, $route,
-        $resource, $mdToast, $timeout, $http, $mdDialog, $stateParams, api) {
+        $resource, $mdToast, $timeout, $http, $mdDialog, $stateParams,
+        api, authentication, config) {
         'ngInject';
 
         $rootScope.viewscope = $scope;
@@ -297,7 +293,7 @@ export default class AppInstanceController {
                         matchBrackets: true,
                         gutters: ['codemirror-gutters']
                     }
-
+                    console.log('cmOpt', $scope.cmOptions);
                     $scope.app = app;
                 }
 
@@ -324,7 +320,7 @@ export default class AppInstanceController {
                 //preserveScope: true,
                 templateUrl: 'views/seed-editor-dialog.html',
                 parent: angular.element(document.body),
-                controller: function(scope, $mdDialog, seedlings, parentScope) {
+                controller: function(scope, $mdDialog, seedlings, parentScope, $timeout) {
 
                     scope.seedlings = seedlings;
                     scope.varyParam = null;
@@ -336,6 +332,9 @@ export default class AppInstanceController {
                     scope.initializeSeedEditor = function() {
                         console.log('DialogController init');
                         console.log(scope.seedlings);
+                        $timeout(() => {
+                            $rootScope.refreshMathJax();
+                        })
                     };
 
                     scope.closeDialog = function() {
@@ -382,9 +381,8 @@ export default class AppInstanceController {
 
         $scope.snapshot = function() {
 
-            if (!USER_ID) { return; }
+            if (!authentication.isAuthorized()) { return; }
 
-            //var canvas = $("#big-canvas");
             var Canvas = $scope.dialect.indexOf('paperscript') > -1 ?
                 document.getElementById("paperscript-canvas") : document.getElementById("big-canvas");
 

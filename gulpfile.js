@@ -4,6 +4,7 @@ var jade          = require('gulp-jade');
 var less          = require('gulp-less');
 var sass          = require('gulp-sass');
 var concatCss     = require('gulp-concat-css');
+var connect       = require('gulp-connect');
 var source        = require('vinyl-source-stream');
 var browserify    = require('browserify');
 var babelify      = require('babelify');
@@ -27,10 +28,17 @@ var djangoStaticDir = "assets/**/*";
 var specificFiles = [
     "node_modules/bootstrap3/dist/css/bootstrap.css",
     "node_modules/angular-material/angular-material.css",
+    "node_modules/codemirror/lib/codemirror.css",
     "node_modules/paper/dist/paper-full.js",
     "node_modules/underscore/underscore.js",
     "node_modules/jquery/dist/jquery.js",
     "node_modules/mathjax/MathJax.js"
+];
+
+var bundleJS = [
+    "node_modules/codemirror/addon/edit/matchbrackets.js",
+    "node_modules/codemirror/mode/javascript/javascript.js",
+    "node_modules/codemirror/mode/coffeescript/coffeescript.js"
 ];
 
 
@@ -55,6 +63,13 @@ gulp.task('less', function () {
     }))
     .pipe(gulp.dest('./build/css/'));
 });
+
+gulp.task('bundleJS', function() {
+    return browserify(bundleJS)
+        .bundle()
+        .pipe(source('extra.js'))
+        .pipe(gulp.dest('./build'));
+})
 
 gulp.task('specificFiles', function () {
   return gulp.src(specificFiles)
@@ -113,17 +128,22 @@ gulp.task('build', ['html', 'browserify'], function() {
   return merge(html,js);
 });
 
-gulp.task('default', ['html', 'specificFiles', 'less', 'browserify',
+gulp.task('default', ['html', 'specificFiles', 'less', 'bundleJS', 'browserify',
 'bundleCss', 'copyStatic'], function() {
 
   browserSync.init(['./build/**/**.**'], {
     server: "./build",
+    host: '0.0.0.0',
     port: 4000,
     notify: false,
     ui: {
       port: 4001
     }
   });
+
+  // connect.server({
+  //   livereload: true
+  // });
 
   gulp.watch("src/index.html", ['html']);
   gulp.watch(viewFiles, ['views']);
