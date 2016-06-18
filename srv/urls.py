@@ -16,6 +16,7 @@ from srv.applications.users.views import UserViewSet
 from srv.applications.authentication.views import AuthenticationViewSet
 from srv.applications.game.views import *
 from srv.applications.game import urls as gameurls
+from srv.applications.profiles import urls as profileurls
 
 #import  srv.applications.symbolic_math
 
@@ -38,6 +39,7 @@ urlpatterns = [
     url(r'^api/', include(api_router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^game/', include(gameurls, namespace='game')),
+    url(r'^profiles/', include(profileurls, namespace='profiles')),
     url(r'^symbolic_math/', include('srv.applications.symbolic_math.urls')),
 ]
 

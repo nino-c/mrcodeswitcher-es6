@@ -6,8 +6,8 @@ import 'angular-resource';
 import 'angular-cookies';
 import 'angular-bootstrap';
 import 'angular-ui-codemirror';
+//import 'ngreact'
 
-// gulp-generated template cache
 import './config/templates';
 import './config';
 import './controllers';
@@ -15,6 +15,7 @@ import './services';
 import './directives';
 import './services';
 import './filters';
+//import './react/hello';
 
 import login from './login';
 
@@ -26,11 +27,9 @@ import CodeMirror from 'codemirror';
 import CoffeeScript from 'coffee-script';
 
 
-//import MathJax from 'mathjax';
-
-// Mount on window for testing
 window.app = angular.module('app', [
     'config',
+    //'react',
     'ui.router',
     'ngMaterial',
     'ui.bootstrap',
@@ -47,6 +46,8 @@ window.app = angular.module('app', [
 ]);
 
 
+
+
 window.app.value('ui.config', {
   codemirror: {
     lineWrapping : true,
@@ -61,10 +62,25 @@ window.app.value('ui.config', {
 })
 .config(function($mdThemingProvider, $stateProvider, $urlRouterProvider, $resourceProvider) {
 
-        $urlRouterProvider.otherwise('/app/home')
-        $mdThemingProvider.theme('default')
+
+
+    //var codeswitcherMap = $mdThemingProvider.extendPalette('light-green', {
+    //'500': '#ff0000',
+    //'contrastDefaultColor': 'dark'
+    //});
+    // $mdThemingProvider.definePalette('codeswitcher', codeswitcherMap);
+    //     $mdThemingProvider.theme('default')
+    //     .primaryPalette('codeswitcher')
+    //     // If you specify less than all of the keys, it will inherit from the
+    //     // default shades
+    //     .accentPalette('green', {
+    //         'default': '300' // use shade 200 for default, and keep all other shades the same
+    //     });
+    //     $mdThemingProvider.alwaysWatchTheme(true);
+    $mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
             .accentPalette('orange');
+        $urlRouterProvider.otherwise('/app/home')
 
         $stateProvider.state('app', {
             url: '/app',
@@ -125,64 +141,7 @@ window.app.value('ui.config', {
             controllerAs: 'ctrl'
         });
 
-        // $stateProvider
-        //     .state('home', {
-        //         url:'',
-        //         views: {
-        // 			'content': {
-        // 				templateUrl: 'views/homepage.html',
-        //                 controller: 'HomeController'
-        // 			},
-        // 			'bottom': {
-        // 				templateUrl: 'views/bottom-bar.html',
-        //                 controller: 'BottomBarController'
-        // 			}
-        // 		}
-        //     })
-        //     .state('app', {
-        // 		url: 'app-list',
-        // 		views: {
-        // 			'content': {
-        // 				templateUrl: 'views/app-list-by-popularity.html',
-        //                 controller: 'AppListController'
-        // 			}
-        // 		}
-        // 	})
-
         $resourceProvider.defaults.stripTrailingSlashes = false;
-
-        // $routeProvider
-        //     .when('/', {
-        //       templateUrl: 'views/homepage.html'
-        //     })
-        //     .when('/paperscript/:id', {
-        //       templateUrl: 'views/paperscript.html'
-        //     })
-        //     .when('/apps-list/', {
-        //       templateUrl: 'views/app-list-by-popularity.html'
-        //     })
-        //     .when('/apps/new/', {
-        //       templateUrl: 'views/app-editor.html'
-        //     })
-        //     .when('/apps/:id/', {
-        //       templateUrl: 'views/app-details.html'
-        //     })
-        //     .when('/apps/:id/edit/', {
-        //       templateUrl: 'views/app-editor.html'
-        //     })
-        //     .when('/instance/:app_id/:instance_id/', {
-        //       templateUrl: 'views/app-display.html',
-        //       reloadOnSearch: false
-        //     })
-        //     // .when('/categories/', {
-        //     //   templateUrl: 'views/categories.html'
-        //     // })
-        //     // .when('/category/:id/', {
-        //     //   templateUrl: 'views/category-list.html'
-        //     // })
-        //     .otherwise({
-        //       redirectTo: '/'
-        //     })
 
     })
     .run(function($rootScope, $location, $http, $cookies, $timeout, $mdToast, $window,
@@ -196,28 +155,17 @@ window.app.value('ui.config', {
         $rootScope.hostnametest = $window.location.hostname;
 
         $.ajaxPrefilter(function( options ) {
-            //if (_.contains(['localhost', '0.0.0.0', '192.138.42.88'], $window.location.hostname)) {
-                console.log('HOSTNAME2', window.location);
-                if (options.url.substr(0,1) == '/') {
-                    options.url = options.url.substr(1,(options.url.length-1));
-                }
-                //var hostname = $window.location.hostname;
-                options.url = `http://${$window.location.hostname}:8000/` + encodeURIComponent( options.url );
-                options.crossDomain = false;
-            //}
+            console.log('HOSTNAME2', window.location);
+            if (options.url.substr(0,1) == '/') {
+                options.url = options.url.substr(1,(options.url.length-1));
+            }
+            options.url = `http://${$window.location.hostname}:8000/` + encodeURIComponent( options.url );
+            options.crossDomain = false;
         });
-
-        // paperscript events
-        //$document.on('click', function(event) {
-            //console.log(event);
-            //$rootScope.$broadcast('click', {event:{point:{x:event.clientX, y:event.clientY}}});
-            //$window.clickHandler({point:{x:event.clientX, y:event.clientY}});
-        //})
 
         $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
         $http.defaults.xsrfCookieName = 'csrftoken';
         $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-
 
         // $rootScope.showBGCanvas = true;   <--------- now obsolete
         // $rootScope.showAppCanvas = false; <--------- now obsolete
@@ -242,16 +190,8 @@ window.app.value('ui.config', {
             'text/paperscript'
         ];
 
-        //$rootScope.userLoggedIn = isNaN(parseInt($window.USER_ID)) ? false : true;
         $rootScope.userLoggedIn = authentication.isAuthorized() ? true : false;
         $rootScope.user = authentication.isAuthorized() ? authentication.current : null;
-        //$rootScope.userLoggedIn = true; $window.USER_ID = 1;
-    //     $rootScope.goHome = function() {
-    //       $location.path('/');
-    //       $rootScope.showBottom = false;
-    //       $rootScope.viewname = 'home';
-    //       $rootScope.topScope.init();
-    //   };
 
         $rootScope.back = function () {
             var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";

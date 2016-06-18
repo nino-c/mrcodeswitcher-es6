@@ -4,6 +4,8 @@ export default class AppListController {
 
         this.showSearch = false;
         this.loading = true;
+        this.sortBy = '-popularity';
+
         $rootScope.showBottom = false;
 
         api.AppServiceMinimal.query().$promise.then(apps => {
@@ -12,6 +14,7 @@ export default class AppListController {
         });
 
         this.openSortMenu = function($mdOpenMenu, $event) {
+            console.log($event);
             $event.stopPropagation();
             $mdOpenMenu($event);
         }
@@ -20,14 +23,6 @@ export default class AppListController {
             console.log('AppList scope init');
         };
 
-        // this.toggleAppList = function() {
-        //     this.showAppList = !this.showAppList;
-        // };
-
-
-        // $window.renderingDone = function() {
-        //     console.log('renderingDone');
-        // }
 
     }
 }

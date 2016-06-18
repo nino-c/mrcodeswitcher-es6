@@ -1,13 +1,13 @@
-<div scroll-to-top ng-init="ctrl.initAppList()">
+<!-- <div scroll-to-top ng-init="ctrl.initAppList()"> -->
 
-    <md-content class="slide-top main-md-content" md-whiteframe="3">
+    <md-content class="slide-top main-md-content" md-whiteframe="3" scroll-to-top>
 
         <div class="toolbar-inner">
             <div layout="row" layout-align="space-between start">
                 <div flex>
 
-                    <md-menu>
-                        <md-button class="md-icon-button" ng-click="openSortMenu($mdOpenMenu, $event)">
+                    <!-- <md-menu>
+                        <md-button class="md-icon-button" ng-click="ctrl.openSortMenu($mdOpenMenu, $event)">
                             <md-icon md-menu-origin md-font-set="material-icons">sort</md-icon>
                         </md-button>
                         <md-menu-content width="4">
@@ -18,7 +18,11 @@
                               </md-button>
                             </md-menu-item>
                         </md-menu-content>
-                    </md-menu>
+                    </md-menu> -->
+                    <!-- <md-radio-group ng-model="ctrl.sortBy">
+                        <md-radio-button value="-popularity">by popularity</md-radio-button>
+                        <md-radio-button value="-created">by most recent</md-radio-button>
+                    </md-radio-group> -->
 
                 </div>
                 <div>
@@ -42,7 +46,7 @@
             <md-progress-linear md-mode="indeterminate"></md-progress-linear>
         </div>
 
-        <md-content ng-repeat="app in ctrl.apps" class="app-list" ui-sref="app.display({id:app.id})">
+        <md-content ng-repeat="app in ctrl.apps | orderBy: ctrl.sortBy" class="app-list" ui-sref="app.display({id:app.id})">
 
             <div class="title">{{ app.title }}</div>
             <div class="text-muted" ng-if="app.subtitle != ''">{{ app.subtitle }}</div>
@@ -82,8 +86,8 @@
                 </div>
                 <div flex-gt-xs="5"></div>
                 <div flex-gt-xs="45">
-                    <md-grid-list md-cols="4" md-row-height="1:1" md-gutter="2px">
-                        <md-grid-tile ng-repeat="im in app.images | limit:12">
+                    <md-grid-list md-cols="3" md-row-height="1:1" md-gutter="2px">
+                        <md-grid-tile ng-repeat="im in app.images | limit:9">
                             <div>
                                 <img src="/media/{{ im | thumbnail:125 }}" class="thumbnail-lg" />
                             </div>
@@ -100,4 +104,4 @@
 
     </md-content>
 
-</div>
+<!-- </div> -->

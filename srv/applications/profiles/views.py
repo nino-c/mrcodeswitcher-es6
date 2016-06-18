@@ -6,13 +6,13 @@ from django.contrib import messages
 from braces.views import LoginRequiredMixin
 from . import forms
 from . import models
-from game.views import getAngularFiles
+#from game.views import getAngularFiles
 
 
 class AngularMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         context = super(AngularMixin, self).get_context_data(**kwargs)
-        context['angular_includes'] = getAngularFiles()
+        context['angular_includes'] = [] #getAngularFiles()
         print '----', context
         return context
 
@@ -34,7 +34,7 @@ class ShowProfile(LoginRequiredMixin, generic.TemplateView, AngularMixin):
         return super(ShowProfile, self).get(request, *args, **kwargs)
 
 
-class EditProfile(LoginRequiredMixin, generic.TemplateView, AngularMixin):
+class EditProfile(LoginRequiredMixin, generic.TemplateView):
     template_name = "profiles/edit_profile.html"
     http_method_names = ['get', 'post']
 

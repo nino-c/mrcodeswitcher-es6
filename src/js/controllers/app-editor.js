@@ -1,7 +1,6 @@
 
-
 export default class AppEditorController {
-    constructor($rootScope, $scope, $location, $route,
+    constructor($rootScope, $scope, $location, $route, $stateParams,
         $mdToast, $interval, $timeout, $window, api) {
         'ngInject';
 
@@ -33,9 +32,9 @@ export default class AppEditorController {
 
         } else {
 
-            $scope.app = api.AppService.get({id:$route.current.params.id})
-            $scope.app.$promise.then(function() {
-                console.log('loaded app')
+            api.AppService.get({id:$stateParams.id}).$promise.then(function(app) {
+                $scope.app = app;
+                console.log('loaded app', app)
                 $scope.editor1 = true;
                 $scope.editor2 = true;
 

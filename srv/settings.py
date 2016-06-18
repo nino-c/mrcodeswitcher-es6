@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_extensions',
     'corsheaders',
+    'crispy_forms',
     'easy_thumbnails',
 
     'srv.applications.common',

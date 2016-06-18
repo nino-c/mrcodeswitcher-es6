@@ -91,9 +91,10 @@ class SnapshotSerializer(serializers.ModelSerializer):
 class UserSerializerExtended(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField(read_only=True)
 
-    class Meta(object):
+    class Meta():
         model = User
-        excludes = ('password',)
+        exclude = ('password', 'last_login', 'is_superuser', 'email', 'is_active',
+            'groups', 'user_permissions', 'created_at', 'updated_at', 'is_admin')
         read_only_fields = ('id', 'name', 'avatar')
 
     def get_avatar(self, obj):

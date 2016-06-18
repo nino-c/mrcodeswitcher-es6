@@ -263,7 +263,7 @@ directives
                     }
 
                 }
-                //console.log($scope);
+                
                 $scope.$parent.$watch('$ctrl.currentInstanceId', function(instanceId) {
 
                     if (!instanceId) return;

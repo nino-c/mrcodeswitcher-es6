@@ -1,10 +1,16 @@
 var gulp          = require('gulp');
+var server        = require('gulp-server-livereload');
 var notify        = require('gulp-notify');
 var jade          = require('gulp-jade');
 var less          = require('gulp-less');
 var sass          = require('gulp-sass');
 var concatCss     = require('gulp-concat-css');
-var connect       = require('gulp-connect');
+//var connect       = require('gulp-connect');
+var express       = require('express');
+//var connectLivereload = require('connect-livereload');
+var livereload    = require('gulp-livereload');
+//var react         = require('gulp-react');
+//var reactify      = require('reactify');
 var source        = require('vinyl-source-stream');
 var browserify    = require('browserify');
 var babelify      = require('babelify');
@@ -13,15 +19,20 @@ var browserSync   = require('browser-sync').create();
 var rename        = require('gulp-rename');
 var templateCache = require('gulp-angular-templatecache');
 var uglify        = require('gulp-uglify');
+//var webserver     = require('gulp-webserver');
+//var server        = require('gulp-server-livereload');
 var merge         = require('merge-stream');
 //var paper         = require('paper');
+var http = require('http');
+var st = require('st');
 
 // selectors
-var scssFiles = "src/js/**/*.scss";
-var jadeFiles = "src/js/**/*.jade";
-var viewFiles = "src/js/**/*.html";
-var jsFiles   = "src/js/**/*.js";
-var lessFiles = "src/less/*.less";
+var scssFiles  = "src/js/**/*.scss";
+var jadeFiles  = "src/js/**/*.jade";
+var viewFiles  = "src/js/**/*.html";
+var jsFiles    = "src/js/**/*.js";
+var lessFiles  = "src/less/*.less";
+var reactFiles = "src/js/**/*.jsx";
 var djangoStaticDir = "assets/**/*";
 
 // particular files
@@ -61,25 +72,33 @@ gulp.task('less', function () {
     .pipe(rename(path => {
         path.dirname = '';
     }))
-    .pipe(gulp.dest('./build/css/'));
+    .pipe(gulp.dest('./build/css/'))
 });
+
+// gulp.task('transformReact', function() {
+//     return browserify(reactFiles)
+//         .transform(reactify)
+//         .bundle()
+//         .pipe(source('reactComponents.js'))
+//         .pipe(gulp.dest('./build'));
+// })
 
 gulp.task('bundleJS', function() {
     return browserify(bundleJS)
         .bundle()
         .pipe(source('extra.js'))
-        .pipe(gulp.dest('./build'));
+        .pipe(gulp.dest('./build'))
 })
 
 gulp.task('specificFiles', function () {
   return gulp.src(specificFiles)
-    .pipe(gulp.dest('./build/'));
+    .pipe(gulp.dest('./build/'))
 });
 
 gulp.task('bundleCss', function () {
   return gulp.src('./build/css/*.css')
     .pipe(concatCss("bundle.css"))
-    .pipe(gulp.dest('./build/'));
+    .pipe(gulp.dest('./build/'))
 });
 
 gulp.task('browserify', ['views'], function() {
@@ -91,13 +110,13 @@ gulp.task('browserify', ['views'], function() {
       //Pass desired output filename to vinyl-source-stream
       .pipe(source('main.js'))
       // Start piping stream to tasks!
-      .pipe(gulp.dest('./build/'));
+      .pipe(gulp.dest('./build/'))
 });
 
 gulp.task('html', function() {
   return gulp.src("src/index.html")
       .on('error', interceptErrors)
-      .pipe(gulp.dest('./build/'));
+      .pipe(gulp.dest('./build/'))
 });
 
 gulp.task('views', function() {
@@ -107,25 +126,37 @@ gulp.task('views', function() {
       }))
       .on('error', interceptErrors)
       .pipe(rename("templates.js"))
-      .pipe(gulp.dest('./src/js/config/'));
+      .pipe(gulp.dest('./src/js/config/'))
 });
 
 gulp.task('copyStatic', function() {
     return gulp.src(djangoStaticDir)
-    .pipe(gulp.dest('./build/assets/'));
+    .pipe(gulp.dest('./build/assets/'))
 })
 
 // This task is used for building production ready
 // minified JS/CSS files into the dist/ folder
 gulp.task('build', ['html', 'browserify'], function() {
   var html = gulp.src("build/index.html")
-                 .pipe(gulp.dest('./dist/'));
+                 .pipe(gulp.dest('./dist/'))
 
   var js = gulp.src("build/main.js")
                .pipe(uglify())
-               .pipe(gulp.dest('./dist/'));
+               .pipe(gulp.dest('./dist/'))
 
   return merge(html,js);
+});
+
+
+gulp.task('webserver', function() {
+  gulp.src('app')
+    .pipe(server({
+        port: 8080,
+        defaultFile: './build/index.html',
+        livereload: true,
+        directoryListing: true,
+        open: true
+    }));
 });
 
 gulp.task('default', ['html', 'specificFiles', 'less', 'bundleJS', 'browserify',
@@ -141,14 +172,40 @@ gulp.task('default', ['html', 'specificFiles', 'less', 'bundleJS', 'browserify',
     }
   });
 
-  // connect.server({
-  //   livereload: true
-  // });
+  // gulp.src('./build')
+  //    .pipe(server({
+  //      livereload: true,
+  //      directoryListing: true,
+  //      open: true
+  //    }));
 
-  gulp.watch("src/index.html", ['html']);
-  gulp.watch(viewFiles, ['views']);
-  gulp.watch(specificFiles, ['specificFiles']);
-  gulp.watch(lessFiles, ['less', 'bundleCss']);
-  gulp.watch(djangoStaticDir, ['copyStatic']);
-  gulp.watch(jsFiles, ['browserify']);
+    // connect.server({
+    //     livereload: true,
+    //     root: "./build"
+    // });
+
+
+    gulp.watch("src/index.html", ['html']);
+    gulp.watch(viewFiles, ['views']);
+    gulp.watch(specificFiles, ['specificFiles']);
+    gulp.watch(lessFiles, ['less', 'bundleCss', 'browserify']);
+    gulp.watch(djangoStaticDir, ['copyStatic']);
+    gulp.watch(jsFiles, ['browserify']);
+
 });
+
+// gulp.task('watch', ['server'], function() {
+//     livereload.listen({ basePath: __dirname });
+//     gulp.watch("src/index.html", ['html']);
+//     gulp.watch(viewFiles, ['views']);
+//     gulp.watch(specificFiles, ['specificFiles']);
+//     gulp.watch(lessFiles, ['less', 'bundleCss', 'browserify']);
+//     gulp.watch(djangoStaticDir, ['copyStatic']);
+//     gulp.watch(jsFiles, ['browserify']);
+// });
+//
+// gulp.task('server', function(done) {
+//   http.createServer(
+//     st({ path: __dirname + '/build', index: 'index.html', cache: false })
+//   ).listen(8080, done);
+// });
