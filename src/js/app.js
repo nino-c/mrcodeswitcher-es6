@@ -25,6 +25,7 @@ import Complex from 'complex';
 import Babel from  'babel-standalone';
 import CodeMirror from 'codemirror';
 import CoffeeScript from 'coffee-script';
+//import MathJax from 'mathjax';
 
 
 window.app = angular.module('app', [
@@ -157,8 +158,6 @@ window.app.value('ui.config', {
         //$window.MathJax = MathJax;
         $window.CodeMirror = CodeMirror;
         $window.CoffeeScript = CoffeeScript;
-
-
 
         $rootScope.hostnametest = $window.location.hostname;
 

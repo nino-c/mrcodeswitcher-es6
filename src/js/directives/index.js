@@ -107,7 +107,7 @@ directives
                 element.html('<canvas id="paperscript-canvas" class="canvas-fullscreen" resize="true" '
                     + ' ng-click="window.clickHandler($event)"'
                     + ' keepalive="true"></canvas>'
-                    + '<script type="text/paperscript" canvas="big-canvas" src="'
+                    + '<script type="text/paperscript" canvas="bg-canvas" src="'
                     + attrs.source +'"></script>');
                 $compile(element.contents())(scope);
                 paper.PaperScript.load();
@@ -127,14 +127,13 @@ directives
 
                 function execInstance(instance) {
                     console.log('execInstance', instance);
-                    $rootScope.currentInstance = instance;
+                    $rootScope.topScope.currentInstance = instance;
 
                     var dialect = instance.game.scriptType;
                     var seedStructure = JSON.parse(instance.game.seedStructure);
                     var seed = JSON.parse(instance.seed);
 
                     if ($rootScope.viewname == 'instance') {
-                        console.log('$rootScope.viewscope', $rootScope.viewscope);
                         $rootScope.viewscope.dialect = dialect;
                         $rootScope.viewscope.seedStructure = seedStructure;
                         $rootScope.viewscope.seed = seed;
@@ -144,17 +143,17 @@ directives
                     // line-by-line for the system-generated part
                     var seedcodelines = [];
                     seedcodelines.push( 'var seed = ' + instance.seed + ';' );
-
+                    //window.Canvas = angular.element(element);
                     // canvas declarations
-                    if (dialect.indexOf('paperscript') == -1) {
-                        seedcodelines.push( 'var canvas = $("#big-canvas");' )
-                        seedcodelines.push( 'var Canvas = document.getElementById("big-canvas");' )
+                    //if (dialect.indexOf('paperscript') == -1) {
+                        seedcodelines.push( 'var canvas = $("#bg-canvas");' )
+                        seedcodelines.push( 'var Canvas = document.getElementById("bg-canvas");' )
                         seedcodelines.push( 'canvas.css({\'display\':\'block\'});' )
                         seedcodelines.push( 'Canvas.width = $(window).width();' )
                         seedcodelines.push( 'Canvas.height = $(window).height()-50;' )
                         seedcodelines.push( 'console.log(Canvas);' )
                         seedcodelines.push( 'console.log(canvas);' )
-                    }
+                    //}
 
                     // import seed attributes into local namespace
                     for (var attr in seed) {
@@ -227,29 +226,29 @@ directives
                     switch (dialect) {
                         case 'text/paperscript':
                             //$parent.clearPaperCanvas();
-                            element.html('<canvas id="big-canvas" class="canvas-fullscreen"></canvas>'
-                                + '<script type="' + dialect + '" canvas="big-canvas">'
+                            element.html('<canvas id="bg-canvas" class="canvas-fullscreen"></canvas>'
+                                + '<script type="' + dialect + '" canvas="bg-canvas">'
                                 + source +'</script>');
                             $compile(element.contents())($scope);
                             //console.log(source);
                             eval( seedcodelines );
-
+                            //window.Canvas = angular.element(element);
 
                             paper.PaperScript.load();
                             //loading = false;
                         break;
                         default:
                             //$parent.clearCanvas();
-                            element.html('<canvas id="big-canvas"></canvas>');
+                            element.html('<canvas id="bg-canvas"></canvas>');
                             $compile(element.contents())($scope);
                             //console.log($scope);
 
-                            // extra_seedcodelines = [ 'var canvas = $("#big-canvas");',
-                            //     'var Canvas = document.getElementById("big-canvas");'];
+                            // extra_seedcodelines = [ 'var canvas = $("#bg-canvas");',
+                            //     'var Canvas = document.getElementById("bg-canvas");'];
 
                             // eval(extra_seedcodelines.join("\n") + "\n" + seedcodelines );
-
-                            eval(seedcodelines );
+                            console.log('seedcodelines', seedcodelines);
+                            eval(seedcodelines);
 
                             window.Canvas = angular.element(element);
                             //console.log('Canvas', Canvas);
@@ -273,15 +272,13 @@ directives
                         console.log('EXEC directive, load');
                         api.InstanceService.get({id:parseInt(instanceId)})
                             .$promise.then(function(instance) {
-                                $rootScope.viewscope.instance = instance;
                                 execInstance(instance);
                             });
 
                     } else {
                         console.log('EXEC directive, NONload');
-                        if ($rootScope.viewscope.instance) {
-                            console.log($rootScope.viewscope.instance);
-                            execInstance($rootScope.viewscope.instance);
+                        if ($rootScope.topScope.instance) {
+                            execInstance($rootScope.topScope.instance);
                         }
                     }
 

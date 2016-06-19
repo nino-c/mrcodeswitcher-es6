@@ -11,38 +11,55 @@
         <div flex class="app-titles">
             <!-- <div class="app-title-header"><strong>Featured App</strong></div> -->
 
-            <div class="app-title-text">{{ currentInstance.game.title }}</div>
-            <div class="app-subtitle-text">{{ currentInstance.game.subtitle }}</div>
+
+            <div class="app-title-text">{{ $ctrl.currentInstance.game.title }}</div>
+            <div class="app-subtitle-text">{{ $ctrl.currentInstance.game.subtitle }}</div>
+
+            <!-- <p class="pull-right">
+                <md-button class="md-button pull-right" flex="nogrow"
+                    ng-cloak ng-click="$ctrl.nextApp()"
+                    ng-if="userLoggedIn">next app →</md-button>
+            </p> -->
+
 
         </div>
 
         <spacer hide-short />
 
-        <div ng-switch="viewname">
 
-            <div ng-switch-when="home" layout="row" layout-align-xs="space-between end" layout-align="end end">
 
-                <md-button class="md-raised md-accent"
-                    ng-click="viewscope.viewSource()" role="button" flex="none">
+
+
+            <div layout="row" layout-align-xs="space-between end"
+                layout-align="start center">
+
+                <md-button class="md-raised md-accent" flex="none"
+                    ng-click="$ctrl.viewSource()" role="button">
                   <md-icon md-svg-src="/assets/site/img/icons/ic_remove_red_eye_black_24px.svg">remove_red_eye_black</md-icon>
                   <span class="button-label">View source-code</span>
                 </md-button>
 
+                <md-button class="md-raised md-primary"
+                    ng-if="viewname == 'instance'"
+                    ng-click="viewscope.snapshot()"
+                    ng-if="userLoggedIn" role="button">
+                  <md-icon md-svg-src="/assets/site/img/icons/ic_photo_camera_black_24px.svg">photo_camera</md-icon>
+                  <span class="button-label">Snapshot</span>
+                </md-button>
+
                 <span flex="grow"></span>
 
-                <md-button class="md-raised button-small"
+                <md-button class="md-raised button-small" flex="none"
                     ui-sref="app.applist" flex="none"
                     style="margin-left:0px;"
                     role="button">
                     <md-icon layout-align="start center"
                         md-font-set="material-icons"
                         class="icon-small">apps</md-icon>
-                    <!-- md-svg-src="/assets/site/img/icons/ic_apps_black_24px.svg" -->
-                    <!-- <i class="material-icons">apps</i> -->
                     <span class="button-small">Browse Apps</span>
                 </md-button>
 
-                <md-button class="md-raised button-small"
+                <!-- <md-button class="md-raised button-small" flex="none"
                     ng-click="$ctrl.nextApp()" flex="none"
                     style="margin-left:0px;"
                     role="button">
@@ -50,10 +67,18 @@
                     <md-icon
                         md-font-set="material-icons"
                         class="icon-small">arrow_forward</md-icon>
+                </md-button> -->
+
+                <md-button class="md-raised button-small" flex="none"
+                    ng-click="editSeed($event)"
+                    role="button">
+                    <md-icon md-font-set="material-icons"
+                        class="icon-small">settings</md-icon>
+                    <span>Edit Seed</span>
                 </md-button>
-
-
             </div>
+
+
 
             <div ng-switch-when="instance" layout="row" layout-align="end end">
                 <md-button class="md-raised md-primary"
@@ -63,17 +88,13 @@
                   <span class="button-label">Snapshot</span>
                 </md-button>
                 <md-button class="md-raised md-accent"
-                    ng-click="viewscope.viewSource()" role="button">
+                    ng-click="$ctrl.viewSource()" role="button">
                   <md-icon md-svg-src="/assets/site/img/icons/ic_remove_red_eye_black_24px.svg">remove_red_eye_black</md-icon>
                   <span class="button-label">View source-code</span>
                 </md-button>
             </div>
 
-        </div>
-        <div layout="row" layout-align-xs="space-between end" layout-align="end end">
 
-
-        </div>
 
     </md-content>
 

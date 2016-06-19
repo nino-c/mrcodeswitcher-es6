@@ -7,11 +7,11 @@
 
 export default class ContentController {
 
-    constructor($rootScope, $scope, $location, $timeout, $window, $state) {
+    constructor($rootScope, $scope, $location, $timeout, $window, $state, $mdDialog) {
 		'ngInject';
 
         $rootScope.topScope = this;
-		$rootScope.viewscope = this;
+        //$rootScope.viewscope = $scope;
 
 		this.loading = false;
         this.testvar2 = 2;
@@ -51,6 +51,53 @@ export default class ContentController {
             this.currentInstanceIndex = this.currentInstanceIndex % this.featuredApps.length;
             this.setCurrentInstance( this.featuredApps[this.currentInstanceIndex][0] );
         };
+
+        this.viewSource = function(ev) {
+            console.log(this.instance);
+            $mdDialog.show({
+                locals: {
+                    app: this.currentInstance.game,
+                },
+                templateUrl: 'views/view-source-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                controller: ViewSourceDialog,
+                controllerAs: 'ctrl'
+            });
+
+            function ViewSourceDialog($scope, $mdDialog, app) {
+
+                $scope.initialize = function() {
+
+                    var lang = app.scriptType.split('text/').join('');
+                    if (lang == 'paperscript') { lang = 'javascript'; }
+
+                    $scope.cmOptions = {
+                        lineWrapping: true,
+                        lineNumbers: true,
+                        indentWithTabs: true,
+                        viewportMargin: Infinity,
+                        mode: lang,
+                        matchBrackets: true,
+                        theme: "mdn-like",
+                        gutters: ['codemirror-gutters']
+                    }
+
+                    $scope.codemirrorLoaded = (_editor) => {
+                        _editor.setOption('mode', 'javascript');
+                        console.log(_editor);
+
+                    }
+
+                    console.log('cmOpt', $scope.cmOptions);
+                    $scope.app = app;
+                }
+
+                this.closeDialog = function() {
+                    $mdDialog.hide();
+                };
+            }
+        }
 
    }
 }

@@ -1,23 +1,26 @@
-<md-dialog aria-label="Seed Editor" style="width: 80%; height: 80%; margin: auto;" ng-init="initialize()">
+<!-- style="width: 80%; height: 80%; margin: auto;"   -->
+<md-dialog aria-label="Seed Editor"
+    ng-init="initialize()">
   <form>
 
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h4 class="md-display-1">Source Code</h4>
         <span flex></span>
-        <md-button class="md-raised md-accent" role="button" ng-click="closeDialog()">
+        <md-button class="md-raised md-accent" role="button" ng-click="ctrl.closeDialog()">
           <md-icon md-font-set="material-icons">close</md-icon>
         </md-button>
       </div>
     </md-toolbar>
 
-    <md-dialog-content layout-padding style="margin-top: 60px;">
+    <md-dialog-content>
 
       <!-- <h4>{{ app.title }}</h4> -->
       <!-- <md-content> -->
-        <ui-codemirror ui-codemirror="{onLoad:codemirrorLoaded}" ui-codemirror-opts="cmOptions" class="inDialog"
+        <ui-codemirror ui-codemirror="{onLoad:codemirrorLoaded}"
+            ui-codemirror-opts="cmOptions" class="inDialog"
             ng-model="app.source"
-            name="source" style="width:80%; height: 100%;">
+            name="source">
         </ui-codemirror>
       <!-- </md-content> -->
 

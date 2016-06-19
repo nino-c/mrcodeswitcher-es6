@@ -241,51 +241,7 @@ export default class AppInstanceController {
 
 
 
-        $scope.viewSource = function(ev) {
-            console.log($scope.instance);
-            $mdDialog.show({
-                locals: {
-                    app: $scope.instance.game,
-                },
-                templateUrl: 'views/view-source-dialog.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                controller: ViewSourceDialog
-            });
 
-            function ViewSourceDialog($scope, $mdDialog, app) {
-
-                $scope.initialize = function() {
-
-                    var lang = app.scriptType.split('text/').join('');
-                    if (lang == 'paperscript') { lang = 'javascript'; }
-
-                    $scope.cmOptions = {
-                        lineWrapping: true,
-                        lineNumbers: true,
-                        indentWithTabs: true,
-                        viewportMargin: Infinity,
-                        mode: lang,
-                        matchBrackets: true,
-                        theme: "mdn-like",
-                        gutters: ['codemirror-gutters']
-                    }
-
-                    $scope.codemirrorLoaded = (_editor) => {
-                        _editor.setOption('mode', 'javascript');
-                        console.log(_editor);
-
-                    }
-
-                    console.log('cmOpt', $scope.cmOptions);
-                    $scope.app = app;
-                }
-
-                $scope.closeDialog = function() {
-                    $mdDialog.hide();
-                };
-            }
-        }
 
         $scope.editSeed = function($event) {
 
@@ -425,19 +381,19 @@ export default class AppInstanceController {
             } catch (e) { console.log('clearPaperCanvas error', e); }
         };
 
-        $scope.$destroy = function() {
-            console.log('scope destroy instance.js');
-
-            // try to delete all vars in scope of previously eval()-ed app
-            try {
-                window.appdestroy();
-            } catch (e) {
-                console.log('no appdestroy()', e);
-            };
-
-            var _canvas = document.getElementById('big-canvas');
-            _canvas.parentNode.remove(_canvas);
-        };
+        // $scope.$destroy = function() {
+        //     console.log('scope destroy instance.js');
+        //
+        //     // try to delete all vars in scope of previously eval()-ed app
+        //     try {
+        //         window.appdestroy();
+        //     } catch (e) {
+        //         console.log('no appdestroy()', e);
+        //     };
+        //
+        //     // var _canvas = document.getElementById('big-canvas');
+        //     // _canvas.parentNode.remove(_canvas);
+        // };
 
         // $scope.$on("$destroy", function() {
         //     console.log('destroy1');
