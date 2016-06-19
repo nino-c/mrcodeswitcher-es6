@@ -5,6 +5,7 @@ import 'angular-route';
 import 'angular-resource';
 import 'angular-cookies';
 import 'angular-bootstrap';
+import 'angular-animate';
 import 'angular-ui-codemirror';
 //import 'ngreact'
 
@@ -36,6 +37,7 @@ window.app = angular.module('app', [
     'ui.bootstrap',
     'ui.codemirror',
     'ngRoute',
+    'ngAnimate',
     'ngResource',
     'ngCookies',
     'templates',

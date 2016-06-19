@@ -52,6 +52,10 @@ export default class ContentController {
             this.setCurrentInstance( this.featuredApps[this.currentInstanceIndex][0] );
         };
 
+        this.showDetailPanel = () => {
+
+        }
+
         this.viewSource = function(ev) {
             console.log(this.instance);
             $mdDialog.show({

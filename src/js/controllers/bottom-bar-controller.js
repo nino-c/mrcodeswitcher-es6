@@ -23,6 +23,8 @@ export default class BottomBarController {
         //     //$rootScope.showBottom = false;
         // };
 
+        this.isInstance = Boolean($rootScope.topScope.viewname == 'instance');
+
         this._nextApp = function() {
             console.log($scope);
         }
