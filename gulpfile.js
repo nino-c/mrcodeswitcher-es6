@@ -6,7 +6,7 @@ var less          = require('gulp-less');
 var sass          = require('gulp-sass');
 var concatCss     = require('gulp-concat-css');
 //var connect       = require('gulp-connect');
-var express       = require('express');
+//var express       = require('express');
 //var connectLivereload = require('connect-livereload');
 var livereload    = require('gulp-livereload');
 //var react         = require('gulp-react');
@@ -23,8 +23,8 @@ var uglify        = require('gulp-uglify');
 //var server        = require('gulp-server-livereload');
 var merge         = require('merge-stream');
 //var paper         = require('paper');
-var http = require('http');
-var st = require('st');
+//var http = require('http');
+//var st = require('st');
 
 // selectors
 var scssFiles  = "src/js/**/*.scss";
@@ -38,6 +38,7 @@ var djangoStaticDir = "assets/**/*";
 // particular files
 var specificFiles = [
     "node_modules/bootstrap3/dist/css/bootstrap.css",
+    "node_modules/codemirror/theme/mdn-like.css",
     "node_modules/angular-material/angular-material.css",
     "node_modules/codemirror/lib/codemirror.css",
     "node_modules/paper/dist/paper-full.js",

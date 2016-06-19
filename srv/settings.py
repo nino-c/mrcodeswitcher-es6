@@ -8,7 +8,7 @@ env = environ.Env()
 DEPLOYMENT_LEVEL = env('DEPLOYMENT_LEVEL')
 SECRET_KEY = env('SECRET_KEY')
 DATABASE_URL = env('DATABASE_URL')
-DEBUG = True
+DEBUG = False
 
 # Paths
 ROOT_DIR = dirname(dirname(dirname(abspath(__file__))))

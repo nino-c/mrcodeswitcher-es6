@@ -15,7 +15,7 @@ export default class ContentController {
 
 		this.loading = false;
         this.testvar2 = 2;
-		this.featuredApps = [[888,60], [901, 15], [121,7]];
+		this.featuredApps = [[140,30], [888,60], [901, 15], [121,7]];
 		this.currentInstance = null;
         this.currentInstanceIndex = 0;
         this.currentInstanceId = this.featuredApps[0][0];

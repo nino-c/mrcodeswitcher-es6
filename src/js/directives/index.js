@@ -107,7 +107,7 @@ directives
                 element.html('<canvas id="paperscript-canvas" class="canvas-fullscreen" resize="true" '
                     + ' ng-click="window.clickHandler($event)"'
                     + ' keepalive="true"></canvas>'
-                    + '<script type="text/paperscript" canvas="paperscript-canvas" src="'
+                    + '<script type="text/paperscript" canvas="big-canvas" src="'
                     + attrs.source +'"></script>');
                 $compile(element.contents())(scope);
                 paper.PaperScript.load();
@@ -227,8 +227,8 @@ directives
                     switch (dialect) {
                         case 'text/paperscript':
                             //$parent.clearPaperCanvas();
-                            element.html('<canvas id="paperscript-canvas" class="canvas-fullscreen"></canvas>'
-                                + '<script type="' + dialect + '" canvas="paperscript-canvas">'
+                            element.html('<canvas id="big-canvas" class="canvas-fullscreen"></canvas>'
+                                + '<script type="' + dialect + '" canvas="big-canvas">'
                                 + source +'</script>');
                             $compile(element.contents())($scope);
                             //console.log(source);
@@ -251,7 +251,7 @@ directives
 
                             eval(seedcodelines );
 
-                            var Canvas = angular.element(element);
+                            window.Canvas = angular.element(element);
                             //console.log('Canvas', Canvas);
                             //gameFunction = new Function('Canvas', source);
                             //gameFunction(Canvas);
@@ -263,7 +263,7 @@ directives
                     }
 
                 }
-                
+
                 $scope.$parent.$watch('$ctrl.currentInstanceId', function(instanceId) {
 
                     if (!instanceId) return;

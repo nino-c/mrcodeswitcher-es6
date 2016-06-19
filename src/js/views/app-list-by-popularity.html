@@ -48,7 +48,7 @@
 
         <md-content ng-repeat="app in ctrl.apps | orderBy: ctrl.sortBy" class="app-list" ui-sref="app.display({id:app.id})">
 
-            <div class="title">{{ app.title }}</div>
+            <div class="section-title">{{ app.title }}</div>
             <div class="text-muted" ng-if="app.subtitle != ''">{{ app.subtitle }}</div>
 
             <div class="spacer"></div>

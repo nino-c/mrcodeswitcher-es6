@@ -1,6 +1,7 @@
 //import config from '../services/config';
 
 export default class AppInstanceController {
+
     constructor($rootScope, $window, $document, $scope, $interval, $location, $route,
         $resource, $mdToast, $timeout, $http, $mdDialog, $stateParams,
         api, authentication, config) {
@@ -36,17 +37,6 @@ export default class AppInstanceController {
 
         $rootScope.topScope.setCurrentInstance($stateParams.id);
 
-        // InstanceService.get({id:$route.current.params.instance_id})
-        //     .$promise.then(function(inst) {
-        //
-        //         console.log('instance seed', inst.seed, inst)
-        //
-        //         $scope.instance = inst;
-        //         $scope.seedStructure = JSON.parse(inst.game.seedStructure);
-        //         $scope.dialect = inst.game.scriptType;
-        //         $scope.execute();
-        //     })
-
         $scope.initialize = function() {
             $rootScope.showBottom = true;
         };
@@ -66,20 +56,8 @@ export default class AppInstanceController {
                 TO _seed:Object (with int conversion)
                 TO seedlings:Array
             */
-            // $scope._seed = _.mapObject(
-            //     JSON.parse($scope.instance.seed), function(s) {
-            //         // if (s.parsing === undefined) s.parsing = false;
-            //         // if (setToFalse) s.parsing = false;
-            //
-            //         if (s.type == "number") {
-            //             s.value = parseInt(s.value);
-            //         }
-            //         return s;
-            //     });
             $scope._seed = $scope.cleanSeed(JSON.parse($scope.instance.seed));
             $scope.seedlings = _.pairs($scope._seed);
-
-
             console.log('parseSeedVector, seedlings = ', $scope.seedlings);
 
         };
@@ -90,8 +68,8 @@ export default class AppInstanceController {
                 TO _seed:Object
             */
             console.log('updateSeed', $scope.seedlings);
-            $scope._seed = $scope.cleanSeed(_.object($scope.seedlings)); console.log('_seed', $scope._seed);
-            $scope.instance.seed = JSON.stringify($scope._seed); console.log('$scope.instance.seed', $scope.instance.seed);
+            $scope._seed = $scope.cleanSeed(_.object($scope.seedlings));
+            $scope.instance.seed = JSON.stringify($scope._seed);
         }
 
         $scope.execute = function(options) {
@@ -222,7 +200,6 @@ export default class AppInstanceController {
 
                         $scope.clearCanvas();
                         $scope.clearPaperCanvas();
-                        $scope.clearEvalScope();
                         $scope.loading = true;
                         $scope.timeElapsed = 0;
                         $scope.seedTouched = false;
@@ -251,7 +228,6 @@ export default class AppInstanceController {
 
                 $scope.clearCanvas();
                 $scope.clearPaperCanvas();
-                $scope.clearEvalScope();
                 $scope.loading = true;
                 $scope.timeElapsed = 0;
                 //$scope.seedTouched = false;
@@ -291,8 +267,16 @@ export default class AppInstanceController {
                         viewportMargin: Infinity,
                         mode: lang,
                         matchBrackets: true,
+                        theme: "mdn-like",
                         gutters: ['codemirror-gutters']
                     }
+
+                    $scope.codemirrorLoaded = (_editor) => {
+                        _editor.setOption('mode', 'javascript');
+                        console.log(_editor);
+
+                    }
+
                     console.log('cmOpt', $scope.cmOptions);
                     $scope.app = app;
                 }
@@ -441,11 +425,8 @@ export default class AppInstanceController {
             } catch (e) { console.log('clearPaperCanvas error', e); }
         };
 
-        $scope.clearEvalScope = function() {
-
-            $scope.source = null;
-            $scope.seedcodelines = null;
-            //$scope.dialect = null;
+        $scope.$destroy = function() {
+            console.log('scope destroy instance.js');
 
             // try to delete all vars in scope of previously eval()-ed app
             try {
@@ -454,18 +435,8 @@ export default class AppInstanceController {
                 console.log('no appdestroy()', e);
             };
 
-            if ($scope.gameFunction) {
-                delete $scope.gameFunction;
-                console.log('deleting gameFunction')
-
-            }
-        };
-
-        $scope._destroy = function() {
-            console.log('scope destroy instance.js')
-            $scope.clearCanvas();
-            $scope.clearPaperCanvas();
-            $scope.clearEvalScope();
+            var _canvas = document.getElementById('big-canvas');
+            _canvas.parentNode.remove(_canvas);
         };
 
         // $scope.$on("$destroy", function() {

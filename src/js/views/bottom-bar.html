@@ -1,10 +1,10 @@
 
 <div class="headline-bottom slide-top" md-whiteframe="6" ng-show="showBottom" ng-init="initBottomBar()">
 
-    <div hide-xs hide-short ng-if="viewname == 'home'">
+    <!-- <div hide-xs hide-short ng-if="viewname == 'home'">
         <h2 hide-xs>Apps at an Exhibition</h2>
         <md-divider hide-xs></md-divider>
-    </div>
+    </div> -->
 
     <md-content layout="column">
 
@@ -21,20 +21,35 @@
         <div ng-switch="viewname">
 
             <div ng-switch-when="home" layout="row" layout-align-xs="space-between end" layout-align="end end">
-                <md-button class="md-raised"
-                    ui-sref="app.applist"
-                    style="margin-left:0px;"
-                    role="button">
-                    <md-icon md-svg-src="/assets/site/img/icons/ic_apps_black_24px.svg">apps</md-icon>
-                    <span>Browse Apps</span>
+
+                <md-button class="md-raised md-accent"
+                    ng-click="viewscope.viewSource()" role="button" flex="none">
+                  <md-icon md-svg-src="/assets/site/img/icons/ic_remove_red_eye_black_24px.svg">remove_red_eye_black</md-icon>
+                  <span class="button-label">View source-code</span>
                 </md-button>
 
-                <md-button class="md-raised"
-                    ng-click="$ctrl.nextApp()"
+                <span flex="grow"></span>
+
+                <md-button class="md-raised button-small"
+                    ui-sref="app.applist" flex="none"
                     style="margin-left:0px;"
                     role="button">
-                    <span>next</span>
-                    <md-icon md-svg-src="/assets/site/img/icons/ic_arrow_forward_black_24px.svg">apps</md-icon>
+                    <md-icon layout-align="start center"
+                        md-font-set="material-icons"
+                        class="icon-small">apps</md-icon>
+                    <!-- md-svg-src="/assets/site/img/icons/ic_apps_black_24px.svg" -->
+                    <!-- <i class="material-icons">apps</i> -->
+                    <span class="button-small">Browse Apps</span>
+                </md-button>
+
+                <md-button class="md-raised button-small"
+                    ng-click="$ctrl.nextApp()" flex="none"
+                    style="margin-left:0px;"
+                    role="button">
+                    <span class="button-small">next</span>
+                    <md-icon
+                        md-font-set="material-icons"
+                        class="icon-small">arrow_forward</md-icon>
                 </md-button>
 
 

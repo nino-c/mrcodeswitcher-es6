@@ -13,3 +13,9 @@
 
 ## general
 - unawkwardize ENDPOINT
+
+## layout
+- only one panel
+- bottom panel (bottom) -> seed editor (float right) [transform]
+- add view source button on home page
+  - home page becomes identical to instance page

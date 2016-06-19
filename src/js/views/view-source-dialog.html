@@ -15,7 +15,7 @@
 
       <!-- <h4>{{ app.title }}</h4> -->
       <!-- <md-content> -->
-        <ui-codemirror ui-codemirror-opts="cmOptions" class="inDialog"
+        <ui-codemirror ui-codemirror="{onLoad:codemirrorLoaded}" ui-codemirror-opts="cmOptions" class="inDialog"
             ng-model="app.source"
             name="source" style="width:80%; height: 100%;">
         </ui-codemirror>

@@ -56,11 +56,12 @@ window.app.value('ui.config', {
     viewportMargin: Infinity,
     mode: 'javascript',
     matchBrackets: true,
-    //theme: "monokai",
+    theme: "mdn-like",
     //gutters: ['codemirror-gutters']
   }
 })
-.config(function($mdThemingProvider, $stateProvider, $urlRouterProvider, $resourceProvider) {
+.config(function($mdThemingProvider, $stateProvider, $urlRouterProvider,
+    $resourceProvider, $mdIconProvider) {
 
 
 
@@ -80,7 +81,12 @@ window.app.value('ui.config', {
     $mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
             .accentPalette('orange');
-        $urlRouterProvider.otherwise('/app/home')
+
+    $mdIconProvider.viewBoxSize = 16;
+
+    //$mdIconProvider.viewBoxSize = 16;
+
+    $urlRouterProvider.otherwise('/app/home')
 
         $stateProvider.state('app', {
             url: '/app',
@@ -151,6 +157,8 @@ window.app.value('ui.config', {
         //$window.MathJax = MathJax;
         $window.CodeMirror = CodeMirror;
         $window.CoffeeScript = CoffeeScript;
+
+
 
         $rootScope.hostnametest = $window.location.hostname;
 
