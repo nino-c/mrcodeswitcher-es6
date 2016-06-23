@@ -4,6 +4,7 @@ export default class AppDisplayController {
         $window, $mdToast, $timeout, api, config) {
         'ngInject';
 
+        this.instances = [];
         this.loading = true;
         this.loadingInstances = true;
         $rootScope.showBottom = false;

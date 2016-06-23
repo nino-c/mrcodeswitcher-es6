@@ -11,7 +11,6 @@ export default class ContentController {
 		'ngInject';
 
         $rootScope.topScope = this;
-        //$rootScope.viewscope = $scope;
 
 		this.loading = false;
         this.testvar2 = 2;
@@ -57,7 +56,6 @@ export default class ContentController {
         }
 
         this.viewSource = function(ev) {
-            console.log(this.instance);
             $mdDialog.show({
                 locals: {
                     app: this.currentInstance.game,

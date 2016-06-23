@@ -31,7 +31,6 @@ import CoffeeScript from 'coffee-script';
 
 window.app = angular.module('app', [
     'config',
-    //'react',
     'ui.router',
     'ngMaterial',
     'ui.bootstrap',
@@ -45,51 +44,29 @@ window.app = angular.module('app', [
     'services',
     'directives',
     'filters',
-    'login'
-]);
+    'login']
 
+    ).value('ui.config', {
 
+      codemirror: {
+        lineWrapping : true,
+        lineNumbers: true,
+        indentWithTabs: true,
+        viewportMargin: Infinity,
+        mode: 'javascript',
+        matchBrackets: true,
+        theme: "mdn-like",
+      }
 
-
-window.app.value('ui.config', {
-  codemirror: {
-    lineWrapping : true,
-    lineNumbers: true,
-    indentWithTabs: true,
-    viewportMargin: Infinity,
-    mode: 'javascript',
-    matchBrackets: true,
-    theme: "mdn-like",
-    //gutters: ['codemirror-gutters']
-  }
-})
-.config(function($mdThemingProvider, $stateProvider, $urlRouterProvider,
+}).config(function($mdThemingProvider, $stateProvider, $urlRouterProvider,
     $resourceProvider, $mdIconProvider) {
 
+        $mdThemingProvider.theme('default')
+                .primaryPalette('blue-grey')
+                .accentPalette('orange');
 
-
-    //var codeswitcherMap = $mdThemingProvider.extendPalette('light-green', {
-    //'500': '#ff0000',
-    //'contrastDefaultColor': 'dark'
-    //});
-    // $mdThemingProvider.definePalette('codeswitcher', codeswitcherMap);
-    //     $mdThemingProvider.theme('default')
-    //     .primaryPalette('codeswitcher')
-    //     // If you specify less than all of the keys, it will inherit from the
-    //     // default shades
-    //     .accentPalette('green', {
-    //         'default': '300' // use shade 200 for default, and keep all other shades the same
-    //     });
-    //     $mdThemingProvider.alwaysWatchTheme(true);
-    $mdThemingProvider.theme('default')
-            .primaryPalette('blue-grey')
-            .accentPalette('orange');
-
-    $mdIconProvider.viewBoxSize = 16;
-
-    //$mdIconProvider.viewBoxSize = 16;
-
-    $urlRouterProvider.otherwise('/app/home')
+        $mdIconProvider.viewBoxSize = 16;
+        $urlRouterProvider.otherwise('/app/home')
 
         $stateProvider.state('app', {
             url: '/app',
@@ -104,50 +81,91 @@ window.app.value('ui.config', {
                     controllerAs: 'ctrl',
                     templateUrl: 'views/toolbar.html'
                 },
-                'bottom-bar@app': {
-                    controller: 'BottomBarController',
+                'panel@app': {
+                    controller: 'PanelController',
                     controllerAs: 'ctrl',
-                    templateUrl: 'views/bottom-bar.html'
-                },
+                    templateUrl: 'views/panel.html'
+                }
             }
         })
         .state('app.home', {
             url: '/home',
-            templateUrl: 'views/homepage.html',
-            controller: 'HomeController',
-            controllerAs: 'ctrl',
-            //resolve: { __: resolverProvider.$get }
+            views: {
+                '': {
+                    templateUrl: 'views/homepage.html',
+                    controller: 'HomeController',
+                    controllerAs: 'ctrl'
+                },
+                'panel-content@app': {
+                    templateUrl: 'views/panel.home.html'
+                },
+                'panel-buttons@app': {
+                    templateUrl: 'views/panel.button-bar.home.html'
+                }
+            },
+            data: {
+                viewname: 'home'
+            }
+        })
+        .state('app.applist', {
+          url: '/app-list',
+        //   templateUrl: 'views/app-list-by-popularity.html',
+        //   controller: 'AppListController',
+        //   controllerAs: 'ctrl',
+          views: {
+              'panel-content@app': {
+                  templateUrl: 'views/app-list-by-popularity.html',
+                  controller: 'AppListController',
+                  controllerAs: 'ctrl'
+              }
+          },
+          data: {
+              viewname: 'app-list'
+          }
         })
         .state('app.login', {
             url: '/login',
             templateUrl: 'login/login.html',
             controller: 'LoginController',
-            controllerAs: 'ctrl'
-        })
-        .state('app.applist', {
-          url: '/app-list',
-          templateUrl: 'views/app-list-by-popularity.html',
-          controller: 'AppListController',
-          controllerAs: 'ctrl',
-          //resolve: { __: resolverProvider.$get }
+            controllerAs: 'ctrl',
+            data: {
+                viewname: 'login'
+            }
         })
         .state('app.display', {
-            url: '/:id',
+            url: '/{id:[0-9]+}/',
             templateUrl: 'views/app-display.html',
             controller: 'AppDisplayController',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            data: {
+                viewname: 'app-display'
+            }
         })
         .state('app.edit', {
-            url: '/:id/edit/',
+            url: '/{id:[0-9]+}/edit/',
             templateUrl: 'views/app-editor.html',
             controller: 'AppEditorController',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            data: {
+                viewname: 'app-edit'
+            }
         })
         .state('app.instance', {
-            url: '/:app/:id',
+            url: '/{app:[0-9]+}/{id:[0-9]+}/',
             templateUrl: 'views/app-instance.html',
             controller: 'AppInstanceController',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            views: {
+                'panel-buttons@app': {
+                    templateUrl: 'views/panel.button-bar.instance.html'
+                },
+                'panel-content@app': {
+                    templateUrl: 'views/seed-panel.html'
+                }
+            },
+            data: {
+                viewname: 'instance'
+            }
         });
 
         $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -176,23 +194,19 @@ window.app.value('ui.config', {
         $http.defaults.xsrfCookieName = 'csrftoken';
         $http.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-        // $rootScope.showBGCanvas = true;   <--------- now obsolete
-        // $rootScope.showAppCanvas = false; <--------- now obsolete
-        $rootScope.isAngularApp = true;
         $rootScope.showBottom = false;
         $rootScope.topScope = null;
-        $rootScope.viewname = 'home';
-        $rootScope.currentInstanceId = 0;
 
         var history = [];
-        $rootScope.$on( "$routeChangeStart", function($event, next, current) {
-            history.push($location.$$path);
-        });
+        $rootScope.$on('$stateChangeStart', function(event, toState,
+            toParams, fromState, fromParams, options) {
+                history.push($location.$$path);
+                $rootScope.stateData = toState.data;
+            });
         $rootScope.$on('$routeChangeSuccess', function() {
             history.push($location.$$path);
         });
 
-        // root-scope vars
         $rootScope.scriptTypes = [
             'text/javascript',
             'text/coffeescript',

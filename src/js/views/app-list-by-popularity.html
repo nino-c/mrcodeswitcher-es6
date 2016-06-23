@@ -1,10 +1,10 @@
 <!-- <div scroll-to-top ng-init="ctrl.initAppList()"> -->
 
-    <md-content class="slide-top main-md-content" md-whiteframe="3" scroll-to-top>
+    <!-- <md-content class="slide-top main-md-content" md-whiteframe="3" scroll-to-top> -->
 
-        <div class="toolbar-inner" ng-show="false">
+        <!-- <div class="toolbar-inner" ng-show="false">
             <div layout="row" layout-align="space-between start">
-                <div flex>
+                <div flex> -->
 
                     <!-- <md-menu>
                         <md-button class="md-icon-button" ng-click="ctrl.openSortMenu($mdOpenMenu, $event)">
@@ -24,7 +24,7 @@
                         <md-radio-button value="-created">by most recent</md-radio-button>
                     </md-radio-group> -->
 
-                </div>
+                <!-- </div>
                 <div>
 
                     <md-input-container class="no-top-margin">
@@ -37,19 +37,18 @@
 
                 </div>
             </div>
-        </div>
-
-        <md-divider class="top" ng-show="!ctrl.loading"></md-divider>
-
-        <!-- <div layout="column" ng-show="ctrl.loading">
-            <spacer height="30"></spacer>
-            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
         </div> -->
 
-        <md-content ng-repeat="app in ctrl.apps | orderBy: ctrl.sortBy" class="app-list" ui-sref="app.display({id:app.id})">
+        <div layout="column" ng-show="ctrl.loading">
+            <spacer height="30"></spacer>
+            <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+        </div>
+
+        <md-content ng-repeat="app in ctrl.apps | orderBy: ctrl.sortBy"
+            class="app-list" ui-sref="app.display({id:app.id})">
 
             <div class="section-title">{{ app.title }}</div>
-            <div class="text-muted" ng-if="app.subtitle != ''">{{ app.subtitle }}</div>
+            <div class="text-muted section-subtitle" ng-if="app.subtitle != ''">{{ app.subtitle }}</div>
 
             <div class="spacer"></div>
 
@@ -102,6 +101,6 @@
 
 
 
-    </md-content>
+    <!-- </md-content> -->
 
 <!-- </div> -->

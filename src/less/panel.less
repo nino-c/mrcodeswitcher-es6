@@ -1,0 +1,78 @@
+
+.panel {
+
+    position: fixed;
+    background-color: rgba(250, 250, 250, 0.65);
+    padding: 10px !important;
+    margin: 0px !important;
+
+    transition: all linear 1s;
+
+    //z-index: 10;
+
+    h1 {
+        color: rgba(80, 80, 80, 0.8);
+        font-weight: 200;
+        letter-spacing: 0.35em;
+        font-size: 5vw;
+    }
+    h2 {
+        color: rgba(80, 80, 80, 0.8);
+        font-weight: 200;
+        letter-spacing: 0.35em;
+        font-size: 3.5vw;
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+    span {
+        line-height: 24px;
+        display: inline;
+        font-weight: 200;
+        color: rgba(120, 120, 120, 0.6);
+    }
+    .headline-content {
+        padding-top: 10px;
+    }
+    .spacer {
+      height: 10px;
+    }
+    button {
+        color: #333333;
+        span.button-label, span.glyphicon {
+            color: #333333;
+        }
+    }
+}
+
+
+.panel.panel-bottom {
+    background-color: rgba(250, 250, 250, 0.65);
+    height: auto;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    //max-height: 200px;
+}
+
+.panel.panel-main {
+    // display: none;
+    //top: 100px;
+    //width: 90%;
+    //margin:auto;
+    background-color: rgba(250, 250, 250, 0.85);
+    margin-left: 4em !important;
+    margin-right: 4em !important;
+    padding-left: 1em !important;
+    padding-right: 1em !important;
+
+    top: 80px;
+    //max-height: calc(~'100% - 100px');
+}
+
+.panel.panel-side {
+    background-color: rgba(250, 250, 250, 0.85);
+    width: 600px;
+    min-height: 350px;
+    top: 150px;
+    right: 50px;
+}

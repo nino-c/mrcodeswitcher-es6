@@ -1,35 +1,10 @@
-<!-- {{ ctrl.featuredApps }}
-{{ ctrl.testvar }} -->
-
-<div ng-if="loading" class="loading-bg-base">
-    <div class="loader-lg">
-        <svg class="circular2">
-            <circle class="path" cx="125" cy="125" r="40" fill="none"
-                stroke-width="4" stroke-miterlimit="10"/>
-        </svg>
-        <div class="loading-text">Loading...</div>
-    </div>
-</div>
 
 <div ui-view="toolbar"></div>
 
 <md-content class="main-content" ng-init="$ctrl.init()">
-
-    <!-- <div ng-view class="flex"></div> -->
-    <!-- <div ui-view flex></div> -->
-    <!-- {{ $ctrl.testvar2 }} -->
     <ui-view></ui-view>
 </md-content>
 
-<div ui-view="bottom-bar"></div>
+<div ui-view="panel"></div>
 
-<!-- <canvas id="bg-canvas" style="width:100%; height: 100%" resize="true"></canvas> -->
-<!-- <script type="text/paperscript" src="/assets/temp/papaver.paper.js"
-    canvas="bg-canvas"></script> -->
-<!-- <script type="text/paperscript" src="/assets/temp/affine-transformations50.js"
-        canvas="bg-canvas"></script> -->
-
-<!-- <paperscript-canvas source="/assets/temp/maze2d.js"></paperscript-canvas> -->
 <app-instance-canvas current-instance-id="currentInstanceId"></app-instance-canvas>
-
-<!-- <div id="canvas-container" app-canvas-instance instance-id="currentInstanceId" ></div> -->
