@@ -1,4 +1,4 @@
-<!-- <div scroll-to-top ng-init="ctrl.initAppList()"> -->
+<div scroll-to-top ng-init="ctrl.initAppList()">
 
     <!-- <md-content class="slide-top main-md-content" md-whiteframe="3" scroll-to-top> -->
 
@@ -38,6 +38,27 @@
                 </div>
             </div>
         </div> -->
+
+        <div class="toolbar-inner" ng-show="false">
+            <div layout="row" layout-align="space-between start">
+                <div flex>
+
+                </div>
+                <div>
+
+                    <md-input-container class="no-top-margin">
+                        <md-icon md-svg-src="/assets/site/img/icons/ic_search_black_24px.svg"
+                            class="half-transparent"
+                            ng-click="showSearch=!showSearch">search</md-icon>
+                        <input ng-show="showSearch" ng-model="searchInput"
+                            id="app-search" placeholder="search apps..." />
+                    </md-input-container>
+
+                </div>
+            </div>
+        </div>
+
+        <md-divider class="top" ng-show="!ctrl.loading"></md-divider>
 
         <div layout="column" ng-show="ctrl.loading">
             <spacer height="30"></spacer>
@@ -103,4 +124,4 @@
 
     <!-- </md-content> -->
 
-<!-- </div> -->
+<!-- </div>
